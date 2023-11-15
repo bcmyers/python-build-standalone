@@ -36,7 +36,7 @@ def build_docker_image(client, image_data: bytes, image_dir: pathlib.Path, name)
 
 
 def ensure_docker_image(client, fh, image_path=None):
-    res = client.api.build(fileobj=fh, decode=True)
+    res = client.api.build(fileobj=fh, decode=True, platform="linux/amd64")
 
     image = None
 
@@ -104,7 +104,7 @@ def copy_file_to_container(path, container, container_path, archive_path=None):
 @contextlib.contextmanager
 def run_container(client, image):
     container = client.containers.run(
-        image, command=["/bin/sleep", "86400"], detach=True
+        image, command=["/bin/sleep", "86400"], detach=True, platform="linux/amd64"
     )
     try:
         yield container
